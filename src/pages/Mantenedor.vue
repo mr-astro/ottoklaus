@@ -2,11 +2,12 @@
   <div class="q-pa-md">
     <q-btn
           color="green"
+          icon-right="add"
           text-color="black"
           elevation="16"
           @click="add_Juguetes"
           class="q-mb-lg"
-          label="AGREGAR JUGUETE"
+          label="add juguete"
         />
     <q-table title="Inventario Otto Klaus" :data="juguetes" :columns="columns" row-key="name" />
   </div>

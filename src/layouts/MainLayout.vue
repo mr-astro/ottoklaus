@@ -14,29 +14,30 @@
         class="q-mr-md"
         >Bienvenida(o), {{ usuario.nombre }}
         </span>
-        <q-avatar rounded size="4rem">
+        <q-avatar rounded size="4rem" class="q-mr-lg">
         <img
         :src="`${usuario.imagen}`"
-        class="q-mr-lg"
         v-if="login"
          />
         </q-avatar>
         <q-btn
-          color="white"
-          text-color="black"
+          color="primary"
+          icon-right="login"
+          text-color="white"
           elevation="16"
           @click="login_User"
-          class="q-mr-lg"
-          label="INGRESAR"
+          class="q-mr-xl"
+          label="Log in with google"
           v-if="!login"
         />
         <q-btn
-          color="white"
-          text-color="black"
+          color="red"
+          icon-right="logout"
+          text-color="white"
           elevation="16"
           @click="logout_User"
-          class="q-mr-lg"
-          label="SALIR"
+          class="q-mr-xl"
+          label="Log out"
           v-else
         />
       </q-toolbar>
