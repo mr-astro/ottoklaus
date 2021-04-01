@@ -1,5 +1,7 @@
 export default function () {
     return {
-        juguetes: []
+        juguetes: [],
+        idEliminar: null,
+        idEditar: null
     }
 }

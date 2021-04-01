@@ -1,56 +1,43 @@
 <template>
   <div class="q-pa-md">
+    <!--Boton Agregar-->
     <q-btn
-          color="green"
-          icon-right="add"
-          text-color="black"
-          elevation="16"
-          @click="add_Juguetes"
-          class="q-mb-lg"
-          label="add juguete"
-        />
-    <q-table title="Inventario Otto Klaus" :data="juguetes" :columns="columns" row-key="name" />
+      color="green"
+      icon-right="add"
+      text-color="black"
+      elevation="16"
+      @click="add_Juguetes, (addToy = true)"
+      class="q-mb-lg"
+      label="add juguete"
+    />
+    <!--Modal Crear Juguete-->
+    <q-dialog v-model="addToy" persistent>
+      <crear-juguete />
+    </q-dialog>
+
+    <!--Tabla de inventario-->
+    <tabla-juguete />
   </div>
 </template>
+
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Mantenedor",
   data() {
     return {
-      columns: [
-        {
-          name: "Codigo",
-          required: true,
-          label: "Codigo",
-          align: "left",
-          field: row => row.Codigo,
-          format: val => `${val}`,
-          sortable: true
-        },
-        {
-          name: "Nombre",
-          align: "center",
-          label: "Nombre",
-          field: "Nombre",
-          sortable: true
-        },
-        { name: "Stock", label: "Stock", field: "Stock", sortable: true },
-        { name: "Precio", label: "Precio", field: "Precio" }
-      ],
+      addToy: false,
     };
   },
 
   methods: {
-    ...mapActions("crud",["get_Juguetes","add_Juguetes"])
-  },
-  computed: {
-    ...mapState("crud",["juguetes"])
+    ...mapActions("crud", ["add_Juguetes", "delete_Juguete"])
   },
 
-  mounted() {
-    this.get_Juguetes();
+  components: {
+    "crear-juguete": require("../components/modals/CrearJuguete.vue").default,
+    "tabla-juguete": require("../components/TableInventario.vue").default,
   },
 };
 </script>
