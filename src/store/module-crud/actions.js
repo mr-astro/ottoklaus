@@ -4,6 +4,7 @@ export function get_Juguetes({ commit }) {
     firebase
         .firestore()
         .collection("stock")
+        .where("stock",">","0")
         .onSnapshot((docs) => {
             const juguetes = [];
             docs.forEach((doc) => {

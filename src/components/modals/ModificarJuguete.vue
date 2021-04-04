@@ -1,27 +1,88 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="text-h6">Editar Juguete</div>
-    </q-card-section>
+<div class="q-pa-md">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">Crear Juguete</div>
+      </q-card-section>
+      <q-card-section>
+        <q-form @submit="onSubmit(juguete)" class="q-gutter-md">
+          <q-input
+            filled
+            disable
+            type="text"
+            v-model="juguete.codigo"
+            label="Codigo del producto"
+            lazy-rules
+            :rules="[
+              val => (val && val.length > 0) || 'Porfavor ingrese un codigo'
+            ]"
+          />
 
-    <q-card-section class="q-pt-none">
-      <q-input outlined disable v-model="juguete.codigo" label="Codigo" />
-      <q-input outlined v-model="juguete.nombre" label="Nombre" />
-      <q-input outlined v-model="juguete.stock" label="Stock" />
-      <q-input outlined v-model="juguete.precio" label="Precio" />
-    </q-card-section>
+          <q-input
+            filled
+            type="text"
+            v-model="juguete.nombre"
+            label="Nombre del producto"
+            lazy-rules
+            :rules="[
+              val => (val && val.length > 0) || 'Porfavor ingrese un nombre'
+            ]"
+          />
 
-    <q-card-actions align="right">
-      <q-btn
-        flat
-        label="Editar"
-        color="primary"
-        @click="editJuguete(juguete, idEditar)"
-        v-close-popup
-      />
-      <q-btn flat label="Cancelar" color="primary" v-close-popup />
-    </q-card-actions>
-  </q-card>
+          <q-input
+            filled
+            type="number"
+            v-model="juguete.stock"
+            label="Stock del producto"
+            lazy-rules
+            :rules="[
+              val =>
+                (val !== null && val !== '') || 'Porfavor ingrese una cantidad'
+            ]"
+          />
+
+          <q-input
+            filled
+            type="number"
+            v-model="juguete.precio"
+            label="Precio del producto"
+            lazy-rules
+            :rules="[
+              val => (val !== null && val !== '') || 'Porfavor ingrese un valor'
+            ]"
+          />
+
+          <q-toggle
+            v-model="accept"
+            label="Aceptar que todos los datos son correctos"
+          />
+
+          <div>
+            <q-btn
+              label="Editar"
+              type="submit"
+              color="primary"
+              v-close-popup="accept"
+              :disable="
+                !accept ||
+                  juguete.codigo == '' ||
+                  juguete.nombre == '' ||
+                  juguete.stock == '' ||
+                  juguete.precio == ''
+              "
+            />
+            <q-btn
+              label="Cancelar"
+              color="primary"
+              flat
+              class="q-ml-sm"
+              v-close-popup
+            />
+          </div>
+        </q-form>
+      </q-card-section>
+    </q-card>
+  </div>
 </template>
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
@@ -29,23 +90,36 @@ export default {
   name: "editar",
   data() {
     return {
+      accept: false,
       juguete: {}
     };
   },
   mounted() {
-    this.juguete = this.idEditar.data;
+    this.juguete = JSON.parse(JSON.stringify(this.idEditar.data))
   },
 
   methods: {
     ...mapActions("crud", ["edit_Juguete"]),
-    editJuguete(juguete, idEditar) {
-      const data = { id: idEditar.id, juguete: juguete };
+    onSubmit(juguete) {
+      //console.log(juguete)
+      const data = { id: this.idEditar.id, juguete: juguete };
       //console.log(data)
-      this.edit_Juguete(data);
-      this.$q.notify({
-        color: "warning",
-        message: "Producto editado"
-    })
+      if (this.accept !== true) {
+        this.$q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: "Usted debe aceptar que todos los campos son correctos"
+        });
+      } else {
+        this.edit_Juguete(data);
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Producto ha sido modificado"
+        });
+      }
     }
   },
 
