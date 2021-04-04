@@ -13,7 +13,7 @@
             round
             flat
             color="grey"
-            @click="edit_Juguete(props)"
+            @click="EDITARID(props.row), (editingJuguete = true)"
             icon="edit"
           ></q-btn>
           <q-btn
@@ -21,56 +21,63 @@
             round
             flat
             color="grey"
-            @click="ELIMINARID(props.row.id), (deleteToy = true)"
+            @click="ELIMINARID(props.row.id), (deleteJuguete = true)"
             icon="delete"
           ></q-btn>
         </q-td>
       </template>
     </q-table>
     <!--Modal Eliminar Juguete-->
-    <q-dialog v-model="deleteToy" persistent>
+    <q-dialog v-model="deleteJuguete" persistent>
       <eliminar-juguete />
+    </q-dialog>
+
+    <!--Modal Editar Juguete-->
+    <q-dialog v-model="editingJuguete" persistent>
+      <editar-juguete />
     </q-dialog>
   </div>
 </template>
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
 export default {
+  name: "TableroJuguetes",
   data() {
     return {
-      deleteToy: false,
+      deleteJuguete: false,
+      editingJuguete: false,
       columns: [
         {
-          name: "Codigo",
+          name: "codigo",
           required: true,
           label: "CODIGO",
           align: "left",
-          field: row => row.Codigo,
+          field: row => row.data.codigo,
           format: val => `${val}`,
           sortable: true
         },
         {
-          name: "Nombre",
+          name: "nombre",
           align: "center",
           label: "NOMBRE",
-          field: "Nombre",
+          field: row => row.data.nombre,
           sortable: true
         },
         {
-          name: "Stock",
+          name: "stock",
           label: "STOCK",
-          field: "Stock",
+          field: row => row.data.stock,
           sortable: true
         },
-        { name: "Precio", label: "PRECIO", field: "Precio", sortable: true },
+        { name: "precio", label: "PRECIO", field: row => row.data.precio, sortable: true },
         { name: "Accion", label: "EDITAR/ELIMINAR", field: "", align: "right" }
       ]
     };
   },
 
   methods: {
-    ...mapActions("crud", ["get_Juguetes", "edit_Juguete", "idEliminar"]),
-    ...mapMutations("crud", ["ELIMINARID"]),
+    ...mapActions("crud", ["get_Juguetes"]),
+    ...mapMutations("crud", ["ELIMINARID", "EDITARID"]),
   },
 
   computed: {
@@ -78,7 +85,8 @@ export default {
   },
 
   components: {
-    "eliminar-juguete": require("../components/modals/EliminarJuguete").default
+    "eliminar-juguete": require("../components/modals/EliminarJuguete").default,
+    "editar-juguete": require("../components/modals/ModificarJuguete").default
   },
 
   mounted() {

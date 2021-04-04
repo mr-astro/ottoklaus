@@ -9,7 +9,7 @@
     <q-card-actions align="right">
       <q-btn
         flat
-        @click="delete_Juguete(idEliminar)"
+        @click="deleteJuguete(idEliminar)"
         label="Eliminar"
         color="primary"
         v-close-popup
@@ -24,12 +24,17 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   methods: {
-    ...mapActions("crud", ["delete_Juguete"])
+    ...mapActions("crud", ["delete_Juguete"]),
+    deleteJuguete(idEliminar) {
+      this.delete_Juguete(idEliminar)
+      this.$q.notify({
+        color: "warning",
+        message: "Producto eliminado"
+    })}
   },
 
   computed: {
     ...mapState("crud", ["idEliminar"])
   }
-
-};
+}
 </script>

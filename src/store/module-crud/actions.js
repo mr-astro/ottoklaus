@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 
 export function get_Juguetes({ commit }) {
-     firebase
+    firebase
         .firestore()
         .collection("stock")
         .onSnapshot((docs) => {
@@ -9,10 +9,7 @@ export function get_Juguetes({ commit }) {
             docs.forEach((doc) => {
                 juguetes.push({
                     id: doc.id,
-                    Codigo: doc.data().codigo,
-                    Nombre: doc.data().nombre,
-                    Precio: doc.data().precio,
-                    Stock: doc.data().stock,
+                    data: doc.data()
                 });
             });
             //console.log(juguetes)
@@ -28,10 +25,19 @@ export function add_Juguete(context, juguete) {
 }
 
 export function delete_Juguete(context, idEliminar) {
-    console.log(idEliminar)
+    //console.log(idEliminar)
     firebase
-    .firestore()
-    .collection('stock')
-    .doc(idEliminar)
-    .delete()
+        .firestore()
+        .collection('stock')
+        .doc(idEliminar)
+        .delete()
+}
+
+export async function edit_Juguete(constext, data) {
+    const { juguete, id } = data
+    await firebase
+        .firestore()
+        .collection('stock')
+        .doc(id)
+        .update(juguete)
 }
