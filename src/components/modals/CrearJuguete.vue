@@ -5,7 +5,7 @@
         <div class="text-h6">Crear Juguete</div>
       </q-card-section>
       <q-card-section>
-        <q-form @submit="onSubmit(juguete)" class="q-gutter-md">
+        <q-form @submit="onSubmit(juguete, juguetes)" class="q-gutter-md">
           <q-input
             filled
             type="text"
@@ -36,7 +36,8 @@
             lazy-rules
             :rules="[
               val =>
-                (val !== null && val !== '') || 'Porfavor ingrese una cantidad'
+                (val !== null && val !== '') || 'Porfavor ingrese una cantidad',
+              val => val >= 0 || 'Solo se permiten valores mayores o iguales a 0'
             ]"
           />
 
@@ -67,7 +68,8 @@
                   juguete.codigo == null ||
                   juguete.nombre == null ||
                   juguete.stock == null ||
-                  juguete.precio == null
+                  juguete.precio == null ||
+                  juguete.stock < 0
               "
             />
             <q-btn
@@ -85,7 +87,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "modalCreacion",
@@ -104,14 +106,16 @@ export default {
   methods: {
     ...mapActions("crud", ["add_Juguete"]),
 
-    onSubmit(juguete) {
-      
-      if (this.accept !== true) {
+    onSubmit(juguete, juguetes) {
+      const { codigo } = juguete;
+      const jug = juguetes;
+      const cod = jug.find(cod => cod.data.codigo == codigo);
+       if (cod) {
         this.$q.notify({
           color: "red-5",
           textColor: "white",
           icon: "warning",
-          message: "Usted debe aceptar que todos los campos son correctos"
+          message: "Codigo ya existe intentelo nuevamente, se cierra la ventana"
         });
       } else {
         this.add_Juguete(juguete);
@@ -123,6 +127,10 @@ export default {
         });
       }
     }
+  },
+
+  computed: {
+    ...mapState("crud", ["juguetes"])
   }
 };
 </script>

@@ -68,7 +68,8 @@
                   juguete.codigo == '' ||
                   juguete.nombre == '' ||
                   juguete.stock == '' ||
-                  juguete.precio == ''
+                  juguete.precio == '' ||
+                  juguete.stock < 0
               "
             />
             <q-btn

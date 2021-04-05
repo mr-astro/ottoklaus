@@ -1,0 +1,9 @@
+pagina github
+https://github.com/mr-astro
+
+Pagina del repositorio Otto Klaus
+https://github.com/mr-astro/ottoklaus
+
+Pagina del deploy en firebase
+https://prueba-otto-klaus-2021.web.app/
+

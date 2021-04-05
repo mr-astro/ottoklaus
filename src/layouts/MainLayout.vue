@@ -9,16 +9,11 @@
           Otto Klaus
         </q-toolbar-title>
 
-        <span
-        v-if="login"
-        class="q-mr-md"
-        >Bienvenida(o), {{ usuario.nombre }}
+        <span v-if="login" class="q-mr-md"
+          >Bienvenida(o), {{ usuario.nombre }}
         </span>
         <q-avatar rounded size="4rem" class="q-mr-lg">
-        <img
-        :src="`${usuario.imagen}`"
-        v-if="login"
-         />
+          <img :src="`${usuario.imagen}`" v-if="login" />
         </q-avatar>
         <q-btn
           color="primary"
@@ -52,8 +47,7 @@
         <q-toolbar-title>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
-          </q-avatar>
-          DC
+          </q-avatar> DC Copyright&nbsp;©&nbsp;DC - 2021
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
